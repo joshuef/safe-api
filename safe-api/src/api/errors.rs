@@ -14,6 +14,7 @@ pub type Result<T> = std::result::Result<T, Error>;
 #[derive(Clone, Debug, PartialEq)]
 pub enum Error {
     AuthError(String),
+    AuthdClientError(String),
     ConnectionError(String),
     NetDataError(String),
     ContentNotFound(String),
@@ -67,18 +68,24 @@ mod codes {
     // Balance Errors
     pub const ERR_INVALID_AMOUNT_ERROR: i32 = -300;
     pub const ERR_NOT_ENOUGH_BALANCE_ERROR: i32 = -301;
+
+    // URL errors
     pub const ERR_INVALID_XOR_URL_ERROR: i32 = -400;
 
     // Misc Errors
     pub const ERR_UNEXPECTED_ERROR: i32 = -500;
     pub const ERR_UNKNOWN_ERROR: i32 = -501;
     pub const ERR_STRING_ERROR: i32 = -502;
+
+    // Authd ClientErrors
+    pub const ERR_AUTHD_CLIENT_ERROR: i32 = -600;
 }
 
 impl Error {
     pub fn error_code(&self) -> i32 {
         match *self {
             Error::AuthError(ref _error) => ERR_AUTH_ERROR,
+            Error::AuthdClientError(ref _error) => ERR_AUTHD_CLIENT_ERROR,
             Error::ConnectionError(ref _error) => ERR_CONNECTION_ERROR,
             Error::NetDataError(ref _error) => ERR_NET_DATA_ERROR,
             Error::ContentNotFound(ref _error) => ERR_CONTENT_NOT_FOUND_ERROR,
@@ -103,6 +110,7 @@ impl Error {
     pub fn description(&self) -> String {
         let (error_type, error_msg) = match self {
             Error::AuthError(info) => ("AuthError".to_string(), info.to_string()),
+            Error::AuthdClientError(info) => ("AuthdClientError".to_string(), info.to_string()),
             Error::ConnectionError(info) => ("ConnectionError".to_string(), info.to_string()),
             Error::NetDataError(info) => ("NetDataError".to_string(), info.to_string()),
             Error::ContentNotFound(info) => ("ContentNotFound".to_string(), info.to_string()),
