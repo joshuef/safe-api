@@ -15,6 +15,7 @@ pub type Result<T> = std::result::Result<T, Error>;
 pub enum Error {
     AuthError(String),
     AuthdClientError(String),
+    AuthenticatorError(String),
     ConnectionError(String),
     NetDataError(String),
     ContentNotFound(String),
@@ -79,6 +80,9 @@ mod codes {
 
     // Authd ClientErrors
     pub const ERR_AUTHD_CLIENT_ERROR: i32 = -600;
+
+    // Authenticator Errors
+    pub const ERR_AUTHENTICATOR_ERROR: i32 = -700;
 }
 
 impl Error {
@@ -86,6 +90,7 @@ impl Error {
         match *self {
             Error::AuthError(ref _error) => ERR_AUTH_ERROR,
             Error::AuthdClientError(ref _error) => ERR_AUTHD_CLIENT_ERROR,
+            Error::AuthenticatorError(ref _error) => ERR_AUTHENTICATOR_ERROR,
             Error::ConnectionError(ref _error) => ERR_CONNECTION_ERROR,
             Error::NetDataError(ref _error) => ERR_NET_DATA_ERROR,
             Error::ContentNotFound(ref _error) => ERR_CONTENT_NOT_FOUND_ERROR,
@@ -111,6 +116,7 @@ impl Error {
         let (error_type, error_msg) = match self {
             Error::AuthError(info) => ("AuthError".to_string(), info.to_string()),
             Error::AuthdClientError(info) => ("AuthdClientError".to_string(), info.to_string()),
+            Error::AuthenticatorError(info) => ("AuthenticatorError".to_string(), info.to_string()),
             Error::ConnectionError(info) => ("ConnectionError".to_string(), info.to_string()),
             Error::NetDataError(info) => ("NetDataError".to_string(), info.to_string()),
             Error::ContentNotFound(info) => ("ContentNotFound".to_string(), info.to_string()),
