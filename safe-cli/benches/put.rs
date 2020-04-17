@@ -10,12 +10,16 @@
 #[macro_use]
 extern crate duct;
 use std::fs;
+use std::time::Duration;
 
 use criterion::{BatchSize, Criterion};
 
 const TEST_FILE_RANDOM_CONTENT: &str = "test_file_random_content.txt";
 
-const SAMPLE_SIZE: usize = 20;
+// sample size is _NOT_ the number of times the command is run...
+// https://bheisler.github.io/criterion.rs/book/analysis.html#measurement
+const SAMPLE_SIZE: usize = 10;
+
 // random data limits to generate a file of size:
 const FOUR_MEGABYTE: usize = 1_000_000;
 const EIGHT_MEGABYTE: usize = 2_000_000;
@@ -30,6 +34,7 @@ fn custom_criterion() -> Criterion {
 }
 fn main() {
     let mut criterion = custom_criterion();
+    criterion = criterion.measurement_time(Duration::from_millis(10000));
 
     bench_cli_put(&mut criterion);
 }

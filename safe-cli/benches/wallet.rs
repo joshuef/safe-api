@@ -10,11 +10,14 @@
 #[macro_use]
 extern crate duct;
 use criterion::Criterion;
+use std::time::Duration;
 
 extern crate safe_cmd_test_utilities;
 
 use safe_cmd_test_utilities::{create_wallet_with_balance, get_bin_location};
 
+// sample size is _NOT_ the number of times the command is run...
+// https://bheisler.github.io/criterion.rs/book/analysis.html#measurement
 const SAMPLE_SIZE: usize = 10;
 
 fn custom_criterion() -> Criterion {
@@ -23,9 +26,11 @@ fn custom_criterion() -> Criterion {
 
 fn main() {
     let mut criterion = custom_criterion();
+    criterion = criterion.measurement_time(Duration::from_millis(20_000));
 
     bench_cli_wallet(&mut criterion);
 }
+
 
 fn bench_cli_wallet(c: &mut Criterion) {
     let (wallet_from, _pk, _sk) = create_wallet_with_balance("1600.000000001", None); // we need 1 nano to pay for the costs of creation
@@ -48,4 +53,5 @@ fn bench_cli_wallet(c: &mut Criterion) {
             assert!(result.contains("Success"))
         })
     });
+
 }

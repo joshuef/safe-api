@@ -12,15 +12,20 @@ extern crate duct;
 use criterion::Criterion;
 
 use safe_cmd_test_utilities::get_bin_location;
+use std::time::Duration;
 
-const SAMPLE_SIZE: usize = 30;
+// sample size is _NOT_ the number of times the command is run...
+// https://bheisler.github.io/criterion.rs/book/analysis.html#measurement
+const SAMPLE_SIZE: usize = 10;
 
 fn custom_criterion() -> Criterion {
-    Criterion::default().sample_size(SAMPLE_SIZE)
+    Criterion::default()
+        .sample_size(SAMPLE_SIZE)
 }
 
 fn main() {
     let mut criterion = custom_criterion();
+    criterion = criterion.measurement_time(Duration::from_millis(20_000));
 
     bench_cli_keys(&mut criterion);
 }
