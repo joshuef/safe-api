@@ -13,6 +13,8 @@ use super::{
     xorurl::{SafeContentType, SafeDataType},
     Safe, SafeApp,
 };
+use log::{debug, info};
+
 use crate::{
     xorurl::{XorUrl, XorUrlEncoder},
     Error, Result,
@@ -136,6 +138,7 @@ impl Safe {
 
     // Check SafeKey's balance from the network from a given SecretKey string
     pub async fn keys_balance_from_sk(&self, sk: &str) -> Result<String> {
+        debug!("Getting balamce from sk, {:?}", &sk);
         let secret_key = sk_from_hex(sk)?;
         let coins = self
             .safe_app
@@ -157,6 +160,7 @@ impl Safe {
 
     // Check that the XOR/NRS-URL corresponds to the public key derived from the provided secret key
     pub async fn validate_sk_for_url(&self, sk: &str, url: &str) -> Result<String> {
+        debug!("validating sk for url");
         let secret_key: SecretKey = sk_from_hex(sk)
             .map_err(|_| Error::InvalidInput("Invalid secret key provided".to_string()))?;
         let (xorurl_encoder, _) = self.parse_and_resolve_url(url).await?;
@@ -201,6 +205,8 @@ impl Safe {
         to_url: &str,
         tx_id: Option<u64>,
     ) -> Result<u64> {
+
+        debug!("Transferring between keys");
         // Parse and validate the amount is a valid
         let amount_coins = parse_coins_amount(amount)?;
 

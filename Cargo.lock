@@ -2499,8 +2499,6 @@ dependencies = [
 [[package]]
 name = "quic-p2p"
 version = "0.5.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ae212c9a93beeb003cba5bea4a0d8af7a5b557619a3a04e7e12bf2c9f90cb055"
 dependencies = [
  "base64 0.10.1",
  "bincode",
@@ -3106,7 +3104,7 @@ dependencies = [
  "relative-path",
  "safe-nd",
  "safe_app",
- "safe_authenticator",
+ "safe_authenticator 0.15.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "safe_core",
  "serde",
  "serde_json",
@@ -3253,8 +3251,6 @@ dependencies = [
 [[package]]
 name = "safe_app"
 version = "0.15.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d3f1eb064d6a2788c7837ca55ce9aca3ec2c87596bba47b405be87040218a625"
 dependencies = [
  "bincode",
  "env_logger 0.6.2",
@@ -3266,12 +3262,32 @@ dependencies = [
  "miscreant",
  "rand 0.6.5",
  "safe-nd",
- "safe_authenticator",
- "safe_authenticator_ffi",
+ "safe_authenticator 0.15.0",
  "safe_core",
  "self_encryption",
  "serde",
  "serde_derive",
+ "threshold_crypto",
+ "tiny-keccak",
+ "tokio 0.1.22",
+ "unwrap",
+]
+
+[[package]]
+name = "safe_authenticator"
+version = "0.15.0"
+dependencies = [
+ "bincode",
+ "env_logger 0.6.2",
+ "ffi_utils",
+ "futures 0.1.29",
+ "jni",
+ "log 0.4.8",
+ "lru-cache",
+ "rand 0.6.5",
+ "safe-nd",
+ "safe_core",
+ "serde",
  "threshold_crypto",
  "tiny-keccak",
  "tokio 0.1.22",
@@ -3316,7 +3332,7 @@ dependencies = [
  "lru-cache",
  "rand 0.6.5",
  "safe-nd",
- "safe_authenticator",
+ "safe_authenticator 0.15.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "safe_core",
  "serde",
  "threshold_crypto",
@@ -3346,9 +3362,8 @@ dependencies = [
 [[package]]
 name = "safe_core"
 version = "0.40.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c75f4996ef92a555ee13d554b45ee48ce27597f7f91bbdd028da7f54ba4e6e90"
 dependencies = [
+ "async-std",
  "bincode",
  "bytes 0.4.12",
  "chrono",

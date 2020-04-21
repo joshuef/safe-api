@@ -412,7 +412,10 @@ impl SafeAuthenticator {
 
                         if let Some(entry) = entry {
                             let plaintext = symmetric_decrypt(&entry.data, &app.keys.enc_key)?;
-                            let app_access = deserialize::<AccessContainerEntry>(&plaintext)?;
+
+                            println!("Attempting deserialllll");
+                            let app_access = deserialize::<AccessContainerEntry>(&plaintext)
+                                .map_err(|e| format!("Failed to deserialize AccessContainerEntry, {:?}", e) )?;
 
                             let mut containers = HashMap::new();
                             for (container_name, (_mdata_info, permission_set)) in app_access {

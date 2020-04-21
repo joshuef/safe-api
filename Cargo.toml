@@ -1,2 +1,9 @@
 [workspace]
 members = ["safe-cli", "safe-api", "safe-ffi", "safe-authd", "jsonrpc-quic"]
+
+
+[patch.crates-io]
+safe_core = { path= "../scl/safe_core" }
+safe_app = { path= "../scl/safe_app" }
+quic-p2p = { path= "../quic-p2p" }
+# quinn = { rev ="242c8e07839f078bd1fbde9c59c5af1b10753ba6"}

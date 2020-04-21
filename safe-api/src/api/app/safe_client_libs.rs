@@ -100,12 +100,17 @@ impl SafeApp for SafeAppScl {
 
         let app = match auth_credentials {
             Some(auth_credentials) => {
+                debug!("decoding ipc of auth cred./.");
                 let auth_granted = decode_ipc_msg(auth_credentials)?;
                 match auth_granted {
                     AuthResponseType::Registered(authgranted) => {
-                        App::registered(app_id.to_string(), authgranted, disconnect_cb)
+                        debug!("auth granted................");
+                        let app = App::registered(app_id.to_string(), authgranted, disconnect_cb);
+                        debug!("App registered instance sorted.");
+                        app
                     }
                     AuthResponseType::Unregistered(config) => {
+                        debug!("auth nottttttttt  granted ipc of auth cred./.");
                         App::unregistered(disconnect_cb, Some(config))
                     }
                 }

@@ -303,6 +303,7 @@ impl Safe {
         to_url: &str,
         tx_id: Option<u64>,
     ) -> Result<u64> {
+        debug!("Initiating wallet transfer");
         // Parse and validate the amount is a valid
         let amount_coins = parse_coins_amount(amount)?;
 
