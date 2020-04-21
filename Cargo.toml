@@ -1,2 +1,9 @@
 [workspace]
 members = ["safe-cli", "safe-api", "safe-ffi", "safe-authd", "jsonrpc-quic"]
+
+[patch.crates-io]
+safe-nd =  { path = "../safe-nd"  }
+safe_core =  { path = "../scl/safe_core" }
+safe_app =  { path = "../scl/safe_app" }
+safe_authenticator =  { path = "../scl/safe_authenticator" }
+

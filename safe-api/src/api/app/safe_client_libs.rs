@@ -25,9 +25,9 @@ use safe_app::{run, App, AppError::CoreError as SafeAppError};
 use safe_core::{client::test_create_balance, immutable_data, Client, CoreError as SafeCoreError};
 use safe_nd::{
     AData, ADataAddress, ADataAppendOperation, ADataEntry, ADataIndex, ADataOwner,
-    ADataPubPermissionSet, ADataPubPermissions, ADataUser, AppendOnlyData, ClientFullId, Coins,
+    ADataPubPermissionSet, ADataPubPermissions, ADataUser, AppendOnlyData, ClientFullId, Money,
     Error as SafeNdError, IDataAddress, MDataAction, MDataPermissionSet, MDataSeqEntryActions,
-    MDataSeqValue, PubSeqAppendOnlyData, PublicKey as SafeNdPublicKey, SeqMutableData, Transaction,
+    MDataSeqValue, PubSeqAppendOnlyData, PublicKey as SafeNdPublicKey, SeqMutableData, MoneyReceipt,
     TransactionId, XorName,
 };
 
@@ -125,7 +125,7 @@ impl SafeApp for SafeAppScl {
         &mut self,
         from_sk: Option<SecretKey>,
         new_balance_owner: PublicKey,
-        amount: Coins,
+        amount: Money,
     ) -> Result<XorName> {
         let safe_app: &App = self.get_safe_app()?;
         let handle = run(safe_app, move |client, _app_context| {
@@ -153,7 +153,7 @@ impl SafeApp for SafeAppScl {
         Ok(xorname)
     }
 
-    async fn allocate_test_coins(&mut self, owner_sk: SecretKey, amount: Coins) -> Result<XorName> {
+    async fn allocate_test_coins(&mut self, owner_sk: SecretKey, amount: Money) -> Result<XorName> {
         info!("Creating test SafeKey with {} test coins", amount);
         let xorname = xorname_from_pk(owner_sk.public_key());
         test_create_balance(&ClientFullId::from(owner_sk), amount)
@@ -162,7 +162,7 @@ impl SafeApp for SafeAppScl {
         Ok(xorname)
     }
 
-    async fn get_balance_from_sk(&self, sk: SecretKey) -> Result<Coins> {
+    async fn get_balance_from_sk(&self, sk: SecretKey) -> Result<Money> {
         let safe_app: &App = self.get_safe_app()?;
         let coins = run(safe_app, move |client, _app_context| {
             client
@@ -179,13 +179,13 @@ impl SafeApp for SafeAppScl {
         from_sk: Option<SecretKey>,
         to_xorname: XorName,
         tx_id: TransactionId,
-        amount: Coins,
-    ) -> Result<Transaction> {
+        amount: Money,
+    ) -> Result<MoneyReceipt> {
         let safe_app: &App = self.get_safe_app()?;
         let tx = run(safe_app, move |client, _app_context| {
             let from_fullid = from_sk.map(ClientFullId::from);
             client
-                .transfer_coins(from_fullid.as_ref(), to_xorname, amount, Some(tx_id))
+                .transfer_money(from_fullid.as_ref(), to_xorname, amount, Some(tx_id))
                 .map_err(SafeAppError)
         })
         .map_err(|err| match err {
@@ -208,8 +208,8 @@ impl SafeApp for SafeAppScl {
         from_sk: Option<SecretKey>,
         to_pk: PublicKey,
         tx_id: TransactionId,
-        amount: Coins,
-    ) -> Result<Transaction> {
+        amount: Money,
+    ) -> Result<MoneyReceipt> {
         let to_xorname = xorname_from_pk(to_pk);
         self.safecoin_transfer_to_xorname(from_sk, to_xorname, tx_id, amount)
             .await

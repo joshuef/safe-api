@@ -18,7 +18,7 @@ use crate::{Error, Result};
 use async_trait::async_trait;
 use log::{debug, trace};
 use safe_nd::{
-    Coins, MDataSeqValue, PublicKey as SafeNdPublicKey, SeqMutableData, Transaction, TransactionId,
+    Money, MDataSeqValue, PublicKey as SafeNdPublicKey, SeqMutableData, Transaction, TransactionId,
     XorName,
 };
 use serde::{Deserialize, Serialize};
@@ -70,7 +70,7 @@ impl Drop for SafeAppFake {
 
 impl SafeAppFake {
     // private helper
-    fn get_balance_from_xorname(&self, xorname: &XorName) -> Result<Coins> {
+    fn get_balance_from_xorname(&self, xorname: &XorName) -> Result<Money> {
         match self.fake_vault.coin_balances.get(&xorname_to_hex(xorname)) {
             None => Err(Error::ContentNotFound("SafeKey data not found".to_string())),
             Some(coin_balance) => parse_coins_amount(&coin_balance.value),
@@ -84,7 +84,7 @@ impl SafeAppFake {
         }
     }
 
-    async fn substract_coins(&mut self, sk: SecretKey, amount: Coins) -> Result<()> {
+    async fn substract_coins(&mut self, sk: SecretKey, amount: Money) -> Result<()> {
         let from_balance = self.get_balance_from_sk(sk.clone()).await?;
         match from_balance.checked_sub(amount) {
             None => Err(Error::NotEnoughBalance(from_balance.to_string())),
@@ -130,11 +130,11 @@ impl SafeApp for SafeAppFake {
         &mut self,
         from_sk: Option<SecretKey>,
         new_balance_owner: PublicKey,
-        amount: Coins,
+        amount: Money,
     ) -> Result<XorName> {
         if let Some(sk) = from_sk {
             // 1 nano is the creation cost
-            let amount_with_cost = Coins::from_nano(amount.as_nano() + 1);
+            let amount_with_cost = Money::from_nano(amount.as_nano() + 1);
             self.substract_coins(sk, amount_with_cost).await?;
         };
 
@@ -150,7 +150,7 @@ impl SafeApp for SafeAppFake {
         Ok(to_xorname)
     }
 
-    async fn allocate_test_coins(&mut self, owner_sk: SecretKey, amount: Coins) -> Result<XorName> {
+    async fn allocate_test_coins(&mut self, owner_sk: SecretKey, amount: Money) -> Result<XorName> {
         let to_pk = owner_sk.public_key();
         let xorname = xorname_from_pk(to_pk);
         self.fake_vault.coin_balances.insert(
@@ -164,7 +164,7 @@ impl SafeApp for SafeAppFake {
         Ok(xorname)
     }
 
-    async fn get_balance_from_sk(&self, sk: SecretKey) -> Result<Coins> {
+    async fn get_balance_from_sk(&self, sk: SecretKey) -> Result<Money> {
         let pk = sk.public_key();
         let xorname = xorname_from_pk(pk);
         self.get_balance_from_xorname(&xorname)
@@ -175,7 +175,7 @@ impl SafeApp for SafeAppFake {
         from_sk: Option<SecretKey>,
         to_xorname: XorName,
         tx_id: TransactionId,
-        amount: Coins,
+        amount: Money,
     ) -> Result<Transaction> {
         if amount.as_nano() == 0 {
             return Err(Error::InvalidAmount(amount.to_string()));
@@ -224,7 +224,7 @@ impl SafeApp for SafeAppFake {
         from_sk: Option<SecretKey>,
         to_pk: PublicKey,
         tx_id: TransactionId,
-        amount: Coins,
+        amount: Money,
     ) -> Result<Transaction> {
         let to_xorname = xorname_from_pk(to_pk);
         self.safecoin_transfer_to_xorname(from_sk, to_xorname, tx_id, amount)
@@ -535,11 +535,11 @@ mod tests {
     use super::*;
     use std::str::FromStr;
 
-    // Helper function to instantiate Coins form a string and handle any error
-    fn coins_from_str(str: &str) -> Result<Coins> {
-        Coins::from_str(str).map_err(|err| {
+    // Helper function to instantiate Money form a string and handle any error
+    fn coins_from_str(str: &str) -> Result<Money> {
+        Money::from_str(str).map_err(|err| {
             Error::Unexpected(format!(
-                "Failed to instantiate Coins from str '{}': {}",
+                "Failed to instantiate Money from str '{}': {}",
                 str, err
             ))
         })

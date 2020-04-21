@@ -19,7 +19,7 @@ use crate::{
 };
 use log::debug;
 use rand_core::RngCore;
-use safe_nd::{Coins, XorName};
+use safe_nd::{Money, XorName};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
@@ -145,7 +145,7 @@ impl Safe {
     // Check the total balance of a Wallet found at a given XOR-URL
     pub async fn wallet_balance(&mut self, url: &str) -> Result<String> {
         debug!("Finding total wallet balance for: {:?}", url);
-        let mut total_balance = Coins::from_nano(0);
+        let mut total_balance = Money::from_nano(0);
 
         // Let's get the list of balances from the Wallet
         let (xorurl_encoder, nrs_xorurl_encoder) = self.parse_and_resolve_url(url).await?;

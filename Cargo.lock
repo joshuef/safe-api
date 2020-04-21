@@ -3223,8 +3223,6 @@ dependencies = [
 [[package]]
 name = "safe-nd"
 version = "0.8.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d22dcd7515d740dd0133c19c738830da96813e33dcc949849025d871de59564d"
 dependencies = [
  "bincode",
  "ed25519-dalek",
@@ -3253,8 +3251,6 @@ dependencies = [
 [[package]]
 name = "safe_app"
 version = "0.15.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d3f1eb064d6a2788c7837ca55ce9aca3ec2c87596bba47b405be87040218a625"
 dependencies = [
  "bincode",
  "env_logger 0.6.2",
@@ -3267,7 +3263,6 @@ dependencies = [
  "rand 0.6.5",
  "safe-nd",
  "safe_authenticator",
- "safe_authenticator_ffi",
  "safe_core",
  "self_encryption",
  "serde",
@@ -3281,8 +3276,6 @@ dependencies = [
 [[package]]
 name = "safe_authenticator"
 version = "0.15.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b59f6c33adb4d528ce64262fb52e7c313706b115a7c92cf40981b13bc75f151c"
 dependencies = [
  "bincode",
  "env_logger 0.6.2",
@@ -3345,8 +3338,6 @@ dependencies = [
 [[package]]
 name = "safe_core"
 version = "0.40.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c75f4996ef92a555ee13d554b45ee48ce27597f7f91bbdd028da7f54ba4e6e90"
 dependencies = [
  "bincode",
  "bytes 0.4.12",

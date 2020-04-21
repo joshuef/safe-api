@@ -318,7 +318,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 * **cli:** minor fix to show the Wallet XOR-URL as the first line in the output of wallet create cmd ([199c577](https://github.com/maidsafe/safe-api/commit/199c5772173cc5407eecd0d2b456da30cc160b6c))
 * **lib:** catch the correct error for insufficient balance from SCL, plus cosmetic improvement to CLI output when generating a key pair ([544139c](https://github.com/maidsafe/safe-api/commit/544139c765d03b10795d9ac5ebd3ecb1a73e7a59))
-* **lib:** use the client instance's transfer_coin instead of the client independent wallet_transfer_coins API ([e3353c6](https://github.com/maidsafe/safe-api/commit/e3353c649efb3ca3e9f22d498cbb88394b2bff7e))
+* **lib:** use the client instance's transfer_coin instead of the client independent wallet_transfer_money API ([e3353c6](https://github.com/maidsafe/safe-api/commit/e3353c649efb3ca3e9f22d498cbb88394b2bff7e))
 * **wallet:** add test and check in fake-scl for scenario when transferring 0 amount ([380e979](https://github.com/maidsafe/safe-api/commit/380e9793e1f21e7a4b13fcb55567afcadac0a64c))
 * **wallet:** make use of the --sk when provided without a --keyurl in a wallet create cmd ([b3817b5](https://github.com/maidsafe/safe-api/commit/b3817b53a0f3abaaa0f3e8dcb3c03031ce395eaf))
 * **wallet:** update default when set in wallet insert cmd, plus add details to User Guide about fetching Wallets and subfolders from FilesContainers ([ee457b0](https://github.com/maidsafe/safe-api/commit/ee457b0dfa347824f70e169160707e81be3a670d))

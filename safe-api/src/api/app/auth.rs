@@ -45,7 +45,7 @@ impl Safe {
             app_permissions: AppPermissions {
                 get_balance: true,
                 perform_mutations: true,
-                transfer_coins: true,
+                transfer_money: true,
             },
             containers: HashMap::new(),
         });

@@ -425,7 +425,7 @@ impl SafeAuthenticator {
                                 vendor: app.info.vendor.clone(),
                                 app_permissions: AppPermissions {
                                     //TODO: retrieve the app permissions
-                                    transfer_coins: true,
+                                    transfer_money: true,
                                     perform_mutations: true,
                                     get_balance: true,
                                 },

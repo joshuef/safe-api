@@ -10,7 +10,7 @@
 use crate::api::fetch::Range;
 use crate::Result;
 use async_trait::async_trait;
-use safe_nd::{Coins, MDataSeqValue, SeqMutableData, Transaction, TransactionId, XorName};
+use safe_nd::{Money, MDataSeqValue, SeqMutableData, MoneyReceipt, TransactionId, XorName};
 use std::collections::BTreeMap;
 use threshold_crypto::{PublicKey, SecretKey};
 
@@ -26,28 +26,28 @@ pub trait SafeApp {
         &mut self,
         from_sk: Option<SecretKey>,
         new_balance_owner: PublicKey,
-        amount: Coins,
+        amount: Money,
     ) -> Result<XorName>;
 
-    async fn allocate_test_coins(&mut self, owner_sk: SecretKey, amount: Coins) -> Result<XorName>;
+    async fn allocate_test_coins(&mut self, owner_sk: SecretKey, amount: Money) -> Result<XorName>;
 
-    async fn get_balance_from_sk(&self, sk: SecretKey) -> Result<Coins>;
+    async fn get_balance_from_sk(&self, sk: SecretKey) -> Result<Money>;
 
     async fn safecoin_transfer_to_xorname(
         &mut self,
         from_sk: Option<SecretKey>,
         to_xorname: XorName,
         tx_id: TransactionId,
-        amount: Coins,
-    ) -> Result<Transaction>;
+        amount: Money,
+    ) -> Result<MoneyReceipt>;
 
     async fn safecoin_transfer_to_pk(
         &mut self,
         from_sk: Option<SecretKey>,
         to_pk: PublicKey,
         tx_id: TransactionId,
-        amount: Coins,
-    ) -> Result<Transaction>;
+        amount: Money,
+    ) -> Result<MoneyReceipt>;
 
     async fn get_transaction(&self, tx_id: u64, pk: PublicKey, sk: SecretKey) -> Result<String>;
 

@@ -18,7 +18,7 @@ use crate::{
     Error, Result,
 };
 use rand_core::RngCore;
-use safe_nd::{Coins, XorName};
+use safe_nd::{Money, XorName};
 use serde::{Deserialize, Serialize};
 use threshold_crypto::{PublicKey, SecretKey};
 
@@ -43,7 +43,7 @@ impl Safe {
         &mut self,
         from_sk: Option<SecretKey>,
         to_pk: PublicKey,
-        amount: Coins,
+        amount: Money,
     ) -> Result<XorName> {
         match self.safe_app.create_balance(from_sk, to_pk, amount).await {
             Err(Error::InvalidAmount(_)) => Err(Error::InvalidAmount(format!(

@@ -12,7 +12,7 @@ use crate::{Error, Result};
 use chrono::{SecondsFormat, Utc};
 use log::debug;
 use safe_core::ipc::{decode_msg, resp::AuthGranted, BootstrapConfig, IpcMsg, IpcResp};
-use safe_nd::{Coins, Error as SafeNdError, PublicKey as SafeNdPublicKey, XorName};
+use safe_nd::{Money, Error as SafeNdError, PublicKey as SafeNdPublicKey, XorName};
 use std::{
     iter::FromIterator,
     str::{self, FromStr},
@@ -24,7 +24,7 @@ const URL_VERSION_QUERY_NAME: &str = "v";
 
 /// The conversion from coin to raw value
 const COIN_TO_RAW_CONVERSION: u64 = 1_000_000_000;
-// The maximum amount of safecoin that can be represented by a single `Coins`
+// The maximum amount of safecoin that can be represented by a single `Money`
 const MAX_COINS_VALUE: u64 = (u32::max_value() as u64 + 1) * COIN_TO_RAW_CONVERSION - 1;
 
 // Out internal key pair structure to manage BLS keys
@@ -83,12 +83,12 @@ pub fn pk_from_hex(hex_str: &str) -> Result<PublicKey> {
         .map_err(|_| Error::InvalidInput("Invalid public key bytes".to_string()))
 }
 
-pub fn parse_coins_amount(amount_str: &str) -> Result<Coins> {
-    Coins::from_str(amount_str).map_err(|err| {
+pub fn parse_coins_amount(amount_str: &str) -> Result<Money> {
+    Money::from_str(amount_str).map_err(|err| {
         match err {
             SafeNdError::ExcessiveValue => Error::InvalidAmount(format!(
                 "Invalid safecoins amount '{}', it exceeds the maximum possible value '{}'",
-                amount_str, Coins::from_nano(MAX_COINS_VALUE)
+                amount_str, Money::from_nano(MAX_COINS_VALUE)
             )),
             SafeNdError::LossOfPrecision => {
                 Error::InvalidAmount(format!("Invalid safecoins amount '{}', the minimum possible amount is one nano coin (0.000000001)", amount_str))
